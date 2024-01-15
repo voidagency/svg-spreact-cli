@@ -73,7 +73,7 @@ Examples
 )
 
 const readFolder = async folder => {
-  let svgs = []
+  let svgsString = ''
   const folderToRead = folder || './'
   try {
     const files = await readdirAsync(folderToRead)
@@ -82,9 +82,9 @@ const readFolder = async folder => {
       const filenames = filtered.map(file => file.replace('.svg', ''))
       for (const file of filtered) {
         const data = await readFileAsync(resolve(folderToRead, file))
-        svgs = [...svgs, data.toString()]
+        svgsString = `${svgsString}${data.toString()}`
       }
-      return Promise.resolve({ svgs, filenames })
+      return Promise.resolve({ svgsString, filenames })
     }
     return Promise.reject(`No svg files found in ${folderToRead}`)
   } catch (e) {
@@ -92,7 +92,7 @@ const readFolder = async folder => {
   }
 }
 
-const doSprite = ({ svgs, filenames }) => {
+const doSprite = ({ svgsString, filenames }) => {
   const {
     optimize,
     tidy,
@@ -102,7 +102,7 @@ const doSprite = ({ svgs, filenames }) => {
     filename,
   } = cli.flags
   const processId = n => `${prefix}${filename ? filenames[n] : n}${suffix}`
-  return svgSpreact(svgs, {
+  return svgSpreact(svgsString, {
     optimize,
     tidy,
     processId,
