@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict'
 const meow = require('meow')
-const svgSpreact = require('svg-spreact')
+const svgSpreact = require('@vactorynext/svg-spreact')
 const fs = require('fs')
 const { write: copy } = require('clipboardy')
 const { extname, resolve } = require('path')
